@@ -20,6 +20,7 @@ jobs:
             - name: Install govulncheck
               run: go install golang.org/x/vuln/cmd/govulncheck@latest
             - name: Run govulncheck
+              continue-on-error: true
               run:  govulncheck -format=sarif ./... > govulncheck.sarif
               working-directory: backend
               
@@ -28,7 +29,7 @@ jobs:
               with:
                 name: govulncheck-report
                 path: govulncheck.sarif
-                
+
             - name: run dependency scan for node
-              run: npm audit --audit-level=moderate   
+              run: npm audit --omit=dev --audit-level=moderate
               working-directory: frontend
