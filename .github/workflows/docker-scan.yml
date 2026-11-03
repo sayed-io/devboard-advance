@@ -1,0 +1,25 @@
+
+name: Docker Scan
+on: 
+    workflow_call:
+
+jobs: 
+    docker-file-linting-image-scaning:
+        runs-on: ubuntu-lates
+        strategy:
+            fail-fast: false
+            matrix:
+                folder: ['backend','frontend']
+        steps:
+        - name: Checkout Code
+          uses: actions/checkout@v7
+        - name: Run Hadolint Linter
+          uses: hadolint/hadolint-action@v3.1.0
+          with:
+          # Path to your Dockerfile. Use 'recursive: true' instead if you have multiple.
+           dockerfile: ${{matrix.folder}}/dockerfile
+          # The severity level at which the linter will fail the CI build (error, warning, info, style, ignore)
+           failure-threshold: info
+
+   
+
