@@ -22,7 +22,13 @@ jobs:
             - name: Run govulncheck
               run:  govulncheck -format=sarif ./... > govulncheck.sarif
               working-directory: backend
-            
+              
+            - name: Upload SARIF report
+              uses: actions/upload-artifact@v6
+              with:
+                name: govulncheck-report
+                path: govulncheck.sarif
+                
             - name: run dependency scan for node
               run: npm audit --audit-level=moderate   
               working-directory: frontend
