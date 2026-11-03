@@ -20,7 +20,7 @@ jobs:
             - name: Install govulncheck
               run: go install golang.org/x/vuln/cmd/govulncheck@latest
             - name: Run govulncheck
-              run: govulncheck -format=sarif -output=govulncheck.sarif ./...
+              run: govulncheck  ./...
               working-directory: backend
             
             - name: run dependency scan for node
