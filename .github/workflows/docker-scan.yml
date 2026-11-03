@@ -4,8 +4,8 @@ on:
     workflow_call:
 
 jobs: 
-    docker-file-linting-image-scaning:
-        runs-on: ubuntu-lates
+    docker-file-linting-image-scanning:
+        runs-on: ubuntu-latest
         strategy:
             fail-fast: false
             matrix:
