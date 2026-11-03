@@ -24,3 +24,4 @@ jobs:
 
           # Severity level at which the linter fails
           failure-threshold: warning
+       - name: Docker image build
