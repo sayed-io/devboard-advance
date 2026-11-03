@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        folder: ['backend', 'frontend']
+        folders: ['backend', 'frontend']
 
     steps:
       - name: Checkout Code
@@ -20,7 +20,7 @@ jobs:
         uses: hadolint/hadolint-action@v3.1.0
         with:
           # Path to your Dockerfile
-          dockerfile: ${{ matrix.folder }}/dockerfile
+          dockerfile: ${{ matrix.folders}}/Dockerfile
 
           # Severity level at which the linter fails
           failure-threshold: warning
