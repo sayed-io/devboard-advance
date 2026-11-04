@@ -1,32 +1,29 @@
-
-##dockerfile
-# Stage 1: Build
-FROM golang:1.27.3-alpine AS builder
+# Build stage
+FROM golang:1-alpine AS builder
 
 WORKDIR /app
-
-RUN apk add --no-cache ca-certificates
 
 COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
+RUN CGO_ENABLED=0 go build -o devboard-backend .
 
-RUN CGO_ENABLED=0 GOOS=linux \
-    go build -trimpath -ldflags="-s -w" \
-    -o devboard-backend .
-
-# Stage 2: Runtime
-FROM scratch
+# Runtime stage (minimal, no shell, runs as nonroot)
+FROM gcr.io/distroless/static-debian12:nonroot
 
 WORKDIR /app
 
-COPY --from=builder /app/devboard-backend /devboard-backend
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt \
-    /etc/ssl/certs/
+COPY --from=builder /app/devboard-backend ./devboard-backend
 
 USER nonroot
 
 EXPOSE 8080
 
-ENTRYPOINT ["./devboard-backend"] 
+# Exec form for proper signal handling
+ENTRYPOINT ["./devboard-backend"]
+
+# To switch back to Docker Hardened Images later, run `docker login dhi.io`
+# and replace the two FROM lines with:
+#   FROM dhi.io/golang:1-alpine AS builder
+#   FROM dhi.io/static:<tag from the DHI catalog>
