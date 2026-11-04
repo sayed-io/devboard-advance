@@ -1,0 +1,4 @@
+sonar.projectName=Devboard
+sonar.projectKey=devboard
+sonar.sources=backend,frontend
+        
